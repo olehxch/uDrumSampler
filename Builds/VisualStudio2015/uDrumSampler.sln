@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2015
+Project("{854370E4-5859-0B79-7B7D-7EE958BECEC9}") = "uDrumSampler", "uDrumSampler.vcxproj", "{518037A0-F71B-E137-CD18-28C84F0C4DBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{518037A0-F71B-E137-CD18-28C84F0C4DBC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{518037A0-F71B-E137-CD18-28C84F0C4DBC}.Debug|Win32.Build.0 = Debug|Win32
+		{518037A0-F71B-E137-CD18-28C84F0C4DBC}.Release|Win32.ActiveCfg = Release|Win32
+		{518037A0-F71B-E137-CD18-28C84F0C4DBC}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
