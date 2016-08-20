@@ -8,4 +8,4 @@ Very simple and minimal drum sampler
 
 ### Screenshots
 
-![default](https://cloud.githubusercontent.com/assets/2100323/17827384/ba47ca7e-6684-11e6-9e9d-80ea32647969.PNG)
+![default](https://cloud.githubusercontent.com/assets/2100323/17832326/8e385ce4-6708-11e6-8a2c-c0ab3d8e77b4.PNG)
