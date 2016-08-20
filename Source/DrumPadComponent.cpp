@@ -52,6 +52,11 @@ DrumPadComponent::DrumPadComponent ()
     volumeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xfff7f7f7));
     volumeSlider->addListener (this);
 
+    addAndMakeVisible (openFile = new TextButton ("new button"));
+    openFile->setButtonText (TRANS("Open"));
+    openFile->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight | Button::ConnectedOnTop | Button::ConnectedOnBottom);
+    openFile->addListener (this);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -75,6 +80,7 @@ DrumPadComponent::~DrumPadComponent()
 
     imageButton = nullptr;
     volumeSlider = nullptr;
+    openFile = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -108,6 +114,7 @@ void DrumPadComponent::resized()
 
     imageButton->setBounds (0, 0, 100, 100);
     volumeSlider->setBounds (8, 64, 88, 33);
+    openFile->setBounds (0, 0, 100, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -125,6 +132,16 @@ void DrumPadComponent::buttonClicked (Button* buttonThatWasClicked)
 		transportSource.start();
 
         //[/UserButtonCode_imageButton]
+    }
+    else if (buttonThatWasClicked == openFile)
+    {
+        //[UserButtonCode_openFile] -- add your button handler code here..
+		FileChooser chooser("Select a Wave sample...", File::nonexistent,"*.wav");
+		if (chooser.browseForFileToOpen())
+		{
+			loadSampleFile(chooser.getResult());
+		}
+        //[/UserButtonCode_openFile]
     }
 
     //[UserbuttonClicked_Post]
@@ -161,9 +178,8 @@ void DrumPadComponent::setText(juce::String text)
 	m_text = text;
 }
 
-void DrumPadComponent::setAudioPath(juce::String path)
+void DrumPadComponent::loadSampleFile(File& file)
 {
-	juce::File file(path);
 	AudioFormatReader* reader = formatManager.createReaderFor(file);
 
 	if (reader != nullptr) {
@@ -171,6 +187,12 @@ void DrumPadComponent::setAudioPath(juce::String path)
 		transportSource.setSource(newSource, 0, nullptr, reader->sampleRate);
 		readerSource = newSource.release();
 	}
+}
+
+void DrumPadComponent::setAudioPath(juce::String path)
+{
+	juce::File file(path);
+	loadSampleFile(file);
 }
 
 void DrumPadComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
@@ -227,6 +249,9 @@ BEGIN_JUCER_METADATA
           textboxtext="ff000000" textboxbkgd="fff7f7f7" min="-60" max="6"
           int="0" style="Rotary" textBoxPos="TextBoxLeft" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1" needsCallback="1"/>
+  <TEXTBUTTON name="new button" id="6dc717a7a33a14fb" memberName="openFile"
+              virtualName="" explicitFocusOrder="0" pos="0 0 100 24" buttonText="Open"
+              connectedEdges="15" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

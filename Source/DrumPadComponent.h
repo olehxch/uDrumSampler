@@ -49,6 +49,7 @@ public:
 	void setColor(Colour c);
 	void setText(juce::String text);
 	void setAudioPath(juce::String path);
+	void loadSampleFile(File& file);
 
 	AudioTransportSource& getAudioSource();
 	void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
@@ -79,6 +80,7 @@ private:
     //==============================================================================
     ScopedPointer<ImageButton> imageButton;
     ScopedPointer<Slider> volumeSlider;
+    ScopedPointer<TextButton> openFile;
 
 
     //==============================================================================
