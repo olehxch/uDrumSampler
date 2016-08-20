@@ -22,7 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "ResourceComponent.h"
+#include "MathHelper.h"
 //[/Headers]
 
 
@@ -36,7 +36,8 @@
                                                                     //[/Comments]
 */
 class DrumPadComponent  : public Component,
-                          public ButtonListener
+                          public ButtonListener,
+                          public SliderListener
 {
 public:
     //==============================================================================
@@ -47,7 +48,6 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void setColor(Colour c);
 	void setText(juce::String text);
-	void setAudioSample(char* sample, int len);
 	void setAudioPath(juce::String path);
 
 	AudioTransportSource& getAudioSource();
@@ -61,6 +61,7 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
     void buttonClicked (Button* buttonThatWasClicked) override;
+    void sliderValueChanged (Slider* sliderThatWasMoved) override;
 
 
 
@@ -68,9 +69,6 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	Colour m_color;
 	juce::String m_text;
-
-	char* m_sample;
-	int m_len;
 
 	// audio player
 	AudioFormatManager formatManager;
@@ -80,6 +78,7 @@ private:
 
     //==============================================================================
     ScopedPointer<ImageButton> imageButton;
+    ScopedPointer<Slider> volumeSlider;
 
 
     //==============================================================================

@@ -54,7 +54,7 @@ MasterLevelMeter::MasterLevelMeter ()
 
 
     //[Constructor] You can add your own custom stuff here..
-	sliderMaster->setValue(linearToDb(0.8));
+	sliderMaster->setValue(MathHelper::linearToDb(0.8));
 	sliderMaster->setTextValueSuffix(" dB");
     //[/Constructor]
 }
@@ -103,7 +103,7 @@ void MasterLevelMeter::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == sliderMaster)
     {
         //[UserSliderCode_sliderMaster] -- add your slider handling code here..
-		masterVolume = DbToLinear(sliderMaster->getValue());
+		masterVolume = MathHelper::DbToLinear(sliderMaster->getValue());
         //[/UserSliderCode_sliderMaster]
     }
 

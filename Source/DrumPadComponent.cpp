@@ -40,6 +40,18 @@ DrumPadComponent::DrumPadComponent ()
                             Image(), 1.000f, Colour (0x004cb8ff),
                             Image(), 1.000f, Colour (0x0069b8eb),
                             Image(), 1.000f, Colour (0x00000000));
+    addAndMakeVisible (volumeSlider = new Slider ("Volume Slider"));
+    volumeSlider->setRange (-60, 6, 0);
+    volumeSlider->setSliderStyle (Slider::Rotary);
+    volumeSlider->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
+    volumeSlider->setColour (Slider::thumbColourId, Colour (0xffb90deb));
+    volumeSlider->setColour (Slider::trackColourId, Colour (0x7fffffff));
+    volumeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0x7f000000));
+    volumeSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x66000000));
+    volumeSlider->setColour (Slider::textBoxTextColourId, Colours::black);
+    volumeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xfff7f7f7));
+    volumeSlider->addListener (this);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -50,6 +62,9 @@ DrumPadComponent::DrumPadComponent ()
     //[Constructor] You can add your own custom stuff here..
 	//addMouseListener(this, false);
 	formatManager.registerBasicFormats();
+
+	volumeSlider->setValue(MathHelper::linearToDb(0.8));
+	volumeSlider->setTextValueSuffix(" dB");
     //[/Constructor]
 }
 
@@ -59,6 +74,7 @@ DrumPadComponent::~DrumPadComponent()
     //[/Destructor_pre]
 
     imageButton = nullptr;
+    volumeSlider = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -91,6 +107,7 @@ void DrumPadComponent::resized()
     //[/UserPreResize]
 
     imageButton->setBounds (0, 0, 100, 100);
+    volumeSlider->setBounds (8, 64, 88, 33);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -114,6 +131,22 @@ void DrumPadComponent::buttonClicked (Button* buttonThatWasClicked)
     //[/UserbuttonClicked_Post]
 }
 
+void DrumPadComponent::sliderValueChanged (Slider* sliderThatWasMoved)
+{
+    //[UsersliderValueChanged_Pre]
+    //[/UsersliderValueChanged_Pre]
+
+    if (sliderThatWasMoved == volumeSlider)
+    {
+        //[UserSliderCode_volumeSlider] -- add your slider handling code here..
+		transportSource.setGain(MathHelper::DbToLinear(volumeSlider->getValue()) );
+        //[/UserSliderCode_volumeSlider]
+    }
+
+    //[UsersliderValueChanged_Post]
+    //[/UsersliderValueChanged_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -128,54 +161,14 @@ void DrumPadComponent::setText(juce::String text)
 	m_text = text;
 }
 
-void DrumPadComponent::setAudioSample(char * sample, int len)
-{
-	m_sample = sample;
-	m_len = len;
-
-	//Stream inputStream;
-	//inputStream.
-	//AudioFormatReader ar = formatManager.createReaderFor(inputStream);
-
-	//transportSource.setSource(source, 0, nullptr, 44100);
-
-	transportSource.setLooping(true);
-	//transportSource.prepareToPlay();
-	transportSource.start();
-	/*AudioFormatReader* reader = formatManager.createReaderFor()
-	if (reader != nullptr)
-	{
-	ScopedPointer<AudioFormatReaderSource> newSource = new AudioFormatReaderSource(reader, true); // [11]
-	transportSource.setSource(newSource, 0, nullptr, reader->sampleRate);                         // [12]
-	playButton.setEnabled(true);                                                                  // [13]
-	readerSource = newSource.release();
-
-	// play
-	transportSource.setLooping(true);
-
-	//transportSource.prepareToPlay();
-	transportSource.start();
-	}*/
-}
-
 void DrumPadComponent::setAudioPath(juce::String path)
 {
-
-	//AudioFormatReader* reader = formatManager.createReaderFor(
 	juce::File file(path);
-
-	//AudioFormatReader* reader = formatManager.createReaderFor(file);
 	AudioFormatReader* reader = formatManager.createReaderFor(file);
 
 	if (reader != nullptr) {
-		//AudioFormatReaderSource* source = new AudioFormatReaderSource(reader, true);
 		ScopedPointer<AudioFormatReaderSource> newSource = new AudioFormatReaderSource(reader, true);
-
-
-
-
 		transportSource.setSource(newSource, 0, nullptr, reader->sampleRate);
-
 		readerSource = newSource.release();
 	}
 }
@@ -228,6 +221,12 @@ BEGIN_JUCER_METADATA
                resourceNormal="" opacityNormal="1" colourNormal="4cb8ff" resourceOver=""
                opacityOver="1" colourOver="69b8eb" resourceDown="" opacityDown="1"
                colourDown="0"/>
+  <SLIDER name="Volume Slider" id="5ce05c4509ea200" memberName="volumeSlider"
+          virtualName="" explicitFocusOrder="0" pos="8 64 88 33" thumbcol="ffb90deb"
+          trackcol="7fffffff" rotarysliderfill="7f000000" rotaryslideroutline="66000000"
+          textboxtext="ff000000" textboxbkgd="fff7f7f7" min="-60" max="6"
+          int="0" style="Rotary" textBoxPos="TextBoxLeft" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1" needsCallback="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

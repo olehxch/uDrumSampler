@@ -5,6 +5,7 @@
               jucerVersion="4.2.3">
   <MAINGROUP id="QERSa2" name="uDrumSampler">
     <GROUP id="{C998AAD6-4F93-3282-AA6A-45CD96BB0205}" name="Source">
+      <FILE id="CnlY4E" name="MathHelper.h" compile="0" resource="0" file="Source/MathHelper.h"/>
       <FILE id="z4X9KH" name="DrumSetComponent.cpp" compile="1" resource="0"
             file="Source/DrumSetComponent.cpp"/>
       <FILE id="UaBiPT" name="DrumSetComponent.h" compile="0" resource="0"

@@ -22,6 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "MathHelper.h"
 //[/Headers]
 
 
@@ -47,9 +48,6 @@ public:
 	void setValue(double value);
 
 	float getVolume() { return masterVolume; }
-
-	float linearToDb(float logv) { return 20.0 * log(logv); }
-	float DbToLinear(float linv) { return powf(10.0, (linv / 20.0)); }
     //[/UserMethods]
 
     void paint (Graphics& g) override;
