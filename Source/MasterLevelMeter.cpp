@@ -62,8 +62,14 @@ MasterLevelMeter::MasterLevelMeter ()
     //[Constructor] You can add your own custom stuff here..
 	sliderMaster->setValue(MathHelper::linearToDb(0.8));
 	sliderMaster->setTextValueSuffix(" dB");
+	
+	showVolume(MathHelper::linearToDb(0.0));
 
-	setVolume(MathHelper::linearToDb(0.0));
+	//guiUpdateTimer
+	guiUpdateTimer.setCallback([this]() {
+		masterMeter->setValue(showMasterVolume);
+	});
+	guiUpdateTimer.startTimer(50);
     //[/Constructor]
 }
 
@@ -77,6 +83,7 @@ MasterLevelMeter::~MasterLevelMeter()
 
 
     //[Destructor]. You can add your own custom destruction code here..
+	guiUpdateTimer.stopTimer();
     //[/Destructor]
 }
 
@@ -89,6 +96,8 @@ void MasterLevelMeter::paint (Graphics& g)
     g.fillAll (Colour (0xff21212a));
 
     //[UserPaint] Add your own custom painting code here..
+	
+	showMasterVolume = showMasterVolume - decMasterVolume;
     //[/UserPaint]
 }
 
@@ -122,10 +131,10 @@ void MasterLevelMeter::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void MasterLevelMeter::setVolume(float value)
+void MasterLevelMeter::showVolume(float value)
 {
-	//m_levelMeter = value;
-	masterMeter->setValue(value);
+	showMasterVolume = MathHelper::linearToDb(value);
+	//masterMeter->setValue(value);
 }
 //[/MiscUserCode]
 

@@ -51,7 +51,7 @@ public:
 
 		bufferToFill.buffer->applyGain(masterMeter.getVolume());
 
-		//masterMeter.setVolume(bufferToFill.buffer->getMagnitude(0, bufferToFill.numSamples));
+		masterMeter.showVolume(bufferToFill.buffer->getMagnitude(0, bufferToFill.numSamples));
     }
 
     void releaseResources() override

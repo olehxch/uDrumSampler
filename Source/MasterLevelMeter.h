@@ -23,6 +23,8 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "MathHelper.h"
+#include <atomic>
+#include "EventTimer.h"
 //[/Headers]
 
 
@@ -45,7 +47,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setVolume(float value);
+	void showVolume(float value);
 	float getVolume() { return masterVolume; }
     //[/UserMethods]
 
@@ -57,7 +59,12 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	float masterVolume;
+	float decMasterVolume = MathHelper::linearToDb(0.05);
+	
+	std::atomic<float> masterVolume;
+	float showMasterVolume;
+
+	EventTimer guiUpdateTimer;
     //[/UserVariables]
 
     //==============================================================================
