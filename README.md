@@ -1,6 +1,10 @@
 # uDrumSampler
 Very simple and minimal drum sampler
 
+### Latest binaries (Windows x32)
+
+![Windows x32](https://github.com/olehch/uDrumSampler/releases/download/v0.1/uDrumSampler-v0.1.zip)
+
 ### Features
 * Map audio sample (.wav file) to button
 * Keyboard mapping
