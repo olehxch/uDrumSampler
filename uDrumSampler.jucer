@@ -5,6 +5,8 @@
               jucerVersion="4.2.3">
   <MAINGROUP id="QERSa2" name="uDrumSampler">
     <GROUP id="{C998AAD6-4F93-3282-AA6A-45CD96BB0205}" name="Source">
+      <FILE id="LmH5si" name="AudioMixer.cpp" compile="1" resource="0" file="Source/AudioMixer.cpp"/>
+      <FILE id="nGZ3xk" name="AudioMixer.h" compile="0" resource="0" file="Source/AudioMixer.h"/>
       <FILE id="CnlY4E" name="MathHelper.h" compile="0" resource="0" file="Source/MathHelper.h"/>
       <FILE id="z4X9KH" name="DrumSetComponent.cpp" compile="1" resource="0"
             file="Source/DrumSetComponent.cpp"/>
@@ -14,10 +16,6 @@
             file="Source/DrumPadComponent.cpp"/>
       <FILE id="qznDJP" name="DrumPadComponent.h" compile="0" resource="0"
             file="Source/DrumPadComponent.h"/>
-      <FILE id="HogTDt" name="ResourceComponent.cpp" compile="1" resource="0"
-            file="Source/ResourceComponent.cpp"/>
-      <FILE id="aG7o03" name="ResourceComponent.h" compile="0" resource="0"
-            file="Source/ResourceComponent.h"/>
       <FILE id="XlHtGV" name="MasterLevelMeter.cpp" compile="1" resource="0"
             file="Source/MasterLevelMeter.cpp"/>
       <FILE id="JThucP" name="MasterLevelMeter.h" compile="0" resource="0"
@@ -28,7 +26,7 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <VS2015 targetFolder="Builds/VisualStudio2015">
+    <VS2015 targetFolder="Builds/VisualStudio2015" vst3Folder="" vstFolder="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="uDrumSampler"/>

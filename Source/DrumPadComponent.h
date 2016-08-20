@@ -70,7 +70,9 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	bool hasSampleLoaded;
+	bool hasSampleLoaded = false;
+	bool isMuted = false;
+	bool isSolo = false;
 	Colour m_color;
 
 	juce::String m_text;
@@ -85,6 +87,8 @@ private:
     ScopedPointer<ImageButton> imageButton;
     ScopedPointer<Slider> volumeSlider;
     ScopedPointer<TextButton> openFile;
+    ScopedPointer<TextButton> soloButton;
+    ScopedPointer<TextButton> muteButton;
 
 
     //==============================================================================

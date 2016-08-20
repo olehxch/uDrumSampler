@@ -56,7 +56,7 @@ MasterLevelMeter::MasterLevelMeter ()
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (100, 400);
+    setSize (64, 512);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -97,8 +97,8 @@ void MasterLevelMeter::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    sliderMaster->setBounds (16, 304, 70, 80);
-    masterMeter->setBounds (16, 16, 70, 270);
+    sliderMaster->setBounds (8, getHeight() - 8 - 80, 48, 80);
+    masterMeter->setBounds (8, 16, 48, 400);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -142,16 +142,16 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="MasterLevelMeter" componentName=""
                  parentClasses="public Component" constructorParams="" variableInitialisers=""
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="100" initialHeight="400">
+                 fixedSize="1" initialWidth="64" initialHeight="512">
   <BACKGROUND backgroundColour="ff21212a"/>
   <SLIDER name="slider Master" id="de9d1168bd238e19" memberName="sliderMaster"
-          virtualName="" explicitFocusOrder="0" pos="16 304 70 80" bkgcol="ffffff"
+          virtualName="" explicitFocusOrder="0" pos="8 8Rr 48 80" bkgcol="ffffff"
           trackcol="ff94ff00" rotarysliderfill="fff92c50" rotaryslideroutline="ff27252b"
           textboxbkgd="ffffffff" min="-50" max="6" int="0" style="RotaryHorizontalVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1" needsCallback="1"/>
   <SLIDER name="Master Meter" id="8ee0c0f1b0343cbf" memberName="masterMeter"
-          virtualName="" explicitFocusOrder="0" pos="16 16 70 270" bkgcol="3dffffff"
+          virtualName="" explicitFocusOrder="0" pos="8 16 48 400" bkgcol="3dffffff"
           thumbcol="fff92c50" trackcol="7fffffff" rotaryslideroutline="99ff0404"
           min="-60" max="6" int="0" style="LinearBarVertical" textBoxPos="NoTextBox"
           textBoxEditable="0" textBoxWidth="10" textBoxHeight="20" skewFactor="1"

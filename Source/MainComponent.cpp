@@ -24,7 +24,7 @@ public:
     //==============================================================================
 	MainContentComponent()
     {
-        setSize (500, 400);
+        setSize (576, 512);
         setAudioChannels (0, 2);
 
 		addKeyListener(this);
