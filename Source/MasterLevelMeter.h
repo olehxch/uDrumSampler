@@ -48,7 +48,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void showVolume(float value);
-	float getVolume() { return masterVolume; }
+	float getVolume() { return mMasterVolume; }
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -59,12 +59,12 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	float decMasterVolume = MathHelper::linearToDb(0.05);
+	float mDecMasterVolume = MathHelper::linearToDb(0.05);
 	
-	std::atomic<float> masterVolume;
-	float showMasterVolume;
+	std::atomic<float> mMasterVolume = 0.0;
+	std::atomic<float> mShowMasterVolume = 0.0;
 
-	EventTimer guiUpdateTimer;
+	EventTimer mGuiUpdateTimer;
     //[/UserVariables]
 
     //==============================================================================

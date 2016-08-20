@@ -45,8 +45,8 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void prepareToPlay(int samplesPerBlockExpected, double sampleRate);
 	void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
-	void DrumSetComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate);
 
 	void play(int padNumber);
     //[/UserMethods]
@@ -56,8 +56,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	AudioMixer mixer;
-	juce::Array<DrumPadComponent*> pads;
+	AudioMixer mMixer;
+	juce::Array<DrumPadComponent*> mPads;
     //[/UserVariables]
 
     //==============================================================================

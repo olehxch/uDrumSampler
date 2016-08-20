@@ -30,8 +30,6 @@ struct PadInfo {
 	juce::Colour color;
 };
 
-
-
 //[/MiscUserDefs]
 
 //==============================================================================
@@ -40,8 +38,7 @@ DrumSetComponent::DrumSetComponent ()
     //[Constructor_pre] You can add your own custom stuff here..
 	juce::String absPath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName();
 
-	
-	// we initialize here because static initializers for colors are initialized here
+	// we initialize here because static initializers for colors are initialized before constructor
 	PadInfo padInfo[16] = {
 		{ "Kick", absPath + "\\Audio\\kick.wav", Colour(0xFFFF5947) },
 		{ "Snare", absPath + "\\Audio\\snare.wav", Colour(0xFFFF3621) },
@@ -64,12 +61,12 @@ DrumSetComponent::DrumSetComponent ()
 		{ "Sample 16", absPath + "\\Audio\\", Colour(0xFFFF9C00) },
 	};
 
-	pads.resize(16);
-	for (int i = 0; i < pads.size(); i++) {
+	mPads.resize(16);
+	for (int i = 0; i < mPads.size(); i++) {
 		auto info = padInfo[i];
 
-		pads.getReference(i) = new DrumPadComponent(info.name, info.color, info.path);
-		addAndMakeVisible(pads[i]);
+		mPads.getReference(i) = new DrumPadComponent(info.name, info.color, info.path);
+		addAndMakeVisible(mPads[i]);
 	}
 
     //[/Constructor_pre]
@@ -93,10 +90,10 @@ DrumSetComponent::~DrumSetComponent()
 
 	
     //[Destructor]. You can add your own custom destruction code here..
-	mixer.releaseResources();
+	mMixer.releaseResources();
 
-	for (auto& pad : pads) delete pad;
-	pads.removeRange(0, pads.size());
+	for (auto& pad : mPads) delete pad;
+	mPads.removeRange(0, mPads.size());
     //[/Destructor]
 }
 
@@ -115,17 +112,13 @@ void DrumSetComponent::paint (Graphics& g)
 void DrumSetComponent::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
-	int size = pads.getFirst()->getWidth();		// all pads should have equal width and height
-	int freeSpace = 0;	// 10px between pads
-
+	int size = mPads.getFirst()->getWidth();		// all pads should have equal width and height
 	int col = 0;
-	for (int i = 0; i < pads.size(); i++) {
+	for (int i = 0; i < mPads.size(); i++) {
 		int row = i % 4;
-		if (i != 0 && i % 4 == 0) {
-			col++;
-		}
-		pads[i]->setBounds(row * size + freeSpace, col * size + freeSpace, size, size);
+		if (i != 0 && i % 4 == 0) { col++; }
 
+		mPads[i]->setBounds(row * size, col * size, size, size);
 	}
     //[/UserPreResize]
 
@@ -136,24 +129,24 @@ void DrumSetComponent::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void DrumSetComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
-{
-	mixer.getNextAudioBlock(bufferToFill);
-}
-
 void DrumSetComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
-	mixer.prepareToPlay(samplesPerBlockExpected, sampleRate);
+	mMixer.prepareToPlay(samplesPerBlockExpected, sampleRate);
 
-	for (auto& pad : pads) {
+	for (auto& pad : mPads) {
 		pad->prepareToPlay(samplesPerBlockExpected, sampleRate);
-		mixer.addInputSource(&pad->getAudioSource(), false);
+		mMixer.addInputSource(&pad->getAudioSource(), false);
 	}
+}
+
+void DrumSetComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
+{
+	mMixer.getNextAudioBlock(bufferToFill);
 }
 
 void DrumSetComponent::play(int padNumber)
 {
-	pads[padNumber]->play();
+	mPads[padNumber]->play();
 }
 
 //[/MiscUserCode]

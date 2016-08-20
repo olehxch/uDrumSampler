@@ -47,10 +47,9 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void setColor(Colour c);
-	void setText(juce::String text);
-	void setAudioPath(juce::String path);
+	void setPadName(juce::String name);
 
-	void openSampleFile(juce::String path);
+	void loadSampleFile(juce::String path);
 	void loadSampleFile(File& file);
 
 	AudioTransportSource& getAudioSource();
@@ -70,17 +69,16 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	bool hasSampleLoaded = false;
-	bool isMuted = false;
-	bool isSolo = false;
-	Colour m_color;
+	bool mIsSampleLoaded = false;
+	bool mIsMuted = false;
+	bool mIsSolo = false;
 
-	juce::String m_text;
+	juce::String mPadTitle = "";
+	Colour mBackgroudColor = Colours::grey;
 
-	// audio player
-	AudioFormatManager formatManager;
-	ScopedPointer<AudioFormatReaderSource> readerSource;
-	AudioTransportSource transportSource;
+	AudioFormatManager mFormatManager;
+	ScopedPointer<AudioFormatReaderSource> mReaderSource;
+	AudioTransportSource mTransportSource;
     //[/UserVariables]
 
     //==============================================================================

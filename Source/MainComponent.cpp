@@ -29,8 +29,8 @@ public:
 
 		addKeyListener(this);
 
-		addAndMakeVisible(drumSet);
-		addAndMakeVisible(masterMeter);
+		addAndMakeVisible(mDrumSet);
+		addAndMakeVisible(mMasterMeter);
     }
 
     ~MainContentComponent()
@@ -41,29 +41,27 @@ public:
     //==============================================================================
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override
     {
-		drumSet.prepareToPlay(samplesPerBlockExpected, sampleRate);
+		mDrumSet.prepareToPlay(samplesPerBlockExpected, sampleRate);
     }
 
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override
     {
         bufferToFill.clearActiveBufferRegion();
-		drumSet.getNextAudioBlock(bufferToFill);
+		mDrumSet.getNextAudioBlock(bufferToFill);
 
-		bufferToFill.buffer->applyGain(masterMeter.getVolume());
+		bufferToFill.buffer->applyGain(mMasterMeter.getVolume());
 
-		masterMeter.showVolume(bufferToFill.buffer->getMagnitude(0, bufferToFill.numSamples));
+		mMasterMeter.showVolume(bufferToFill.buffer->getMagnitude(0, bufferToFill.numSamples));
     }
 
-    void releaseResources() override
-    {
-    }
+    void releaseResources() override {}
 
 	bool keyPressed(const KeyPress & key, Component* originatingComponent)
 	{
 		char pressedKey = key.getTextCharacter();
 		
 		for (int i = 0; i < 16; i++) {
-			if (mappedKeys[i] == pressedKey) drumSet.play(i);
+			if (mMappedKeys[i] == pressedKey) mDrumSet.play(i);
 		}
 		
 		return true;
@@ -78,21 +76,21 @@ public:
 
     void resized() override
     {
-		masterMeter.setBounds(getWidth() - masterMeter.getWidth(), 0, masterMeter.getWidth(), masterMeter.getHeight());
-		drumSet.setBounds(0, 0, drumSet.getWidth(), drumSet.getHeight());
+		mMasterMeter.setBounds(getWidth() - mMasterMeter.getWidth(), 0, mMasterMeter.getWidth(), mMasterMeter.getHeight());
+		mDrumSet.setBounds(0, 0, mDrumSet.getWidth(), mDrumSet.getHeight());
     }
 
 
 private:
     //==============================================================================
-	MasterLevelMeter masterMeter;
-	DrumSetComponent drumSet;
+	MasterLevelMeter mMasterMeter;
+	DrumSetComponent mDrumSet;
 
-	const char mappedKeys[16] = {	'1', '2', '3', '4',
+	const char mMappedKeys[16] = {	'1', '2', '3', '4',
 									'q', 'w', 'e', 'r',
 									'a', 's', 'd', 'f',
 									'z', 'x', 'c', 'v'
-								};
+								 };
     // Your private member variables go here...
 
 

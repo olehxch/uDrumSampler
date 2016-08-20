@@ -22,3 +22,6 @@ AudioMixer::AudioMixer()
 AudioMixer::~AudioMixer()
 {
 }
+
+void AudioMixer::setSolo(int pos, bool value) {};
+void AudioMixer::setMute(int pos, bool value) {};
