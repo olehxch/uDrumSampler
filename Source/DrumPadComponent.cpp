@@ -73,6 +73,18 @@ DrumPadComponent::DrumPadComponent (juce::String name, Colour color, juce::Strin
     muteButton->setColour (TextButton::buttonColourId, Colour (0xffffcc64));
     muteButton->setColour (TextButton::buttonOnColourId, Colour (0xfffd5f5f));
 
+    addAndMakeVisible (padName = new TextEditor ("Pad Name"));
+    padName->setMultiLine (false);
+    padName->setReturnKeyStartsNewLine (false);
+    padName->setReadOnly (false);
+    padName->setScrollbarsShown (false);
+    padName->setCaretVisible (true);
+    padName->setPopupMenuEnabled (true);
+    padName->setColour (TextEditor::backgroundColourId, Colour (0x00ffffff));
+    padName->setColour (TextEditor::outlineColourId, Colour (0x00000000));
+    padName->setColour (TextEditor::shadowColourId, Colour (0x002d2d2d));
+    padName->setText (String());
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -90,6 +102,10 @@ DrumPadComponent::DrumPadComponent (juce::String name, Colour color, juce::Strin
 	setAudioPath(path);
 	this->m_text = name;
 	this->m_color = color;
+
+	// pad name label
+	padName->setFont(Font("Agency FB", 38.00f, Font::plain));
+	padName->setText(name);
     //[/Constructor]
 }
 
@@ -103,6 +119,7 @@ DrumPadComponent::~DrumPadComponent()
     openFile = nullptr;
     soloButton = nullptr;
     muteButton = nullptr;
+    padName = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -120,12 +137,6 @@ void DrumPadComponent::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
 	if(hasSampleLoaded) g.fillAll(m_color);
-
-
-	g.setColour(Colours::black);
-	g.setFont(Font("Agency FB", 38.00f, Font::plain));
-	g.drawText(m_text, 0, 0, 100, 100, Justification::centred, true);
-
     //[/UserPaint]
 }
 
@@ -139,6 +150,7 @@ void DrumPadComponent::resized()
     openFile->setBounds (0, 0, 64, 24);
     soloButton->setBounds (64, 0, 32, 24);
     muteButton->setBounds (96, 0, 32, 24);
+    padName->setBounds (0, 24, 128, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -307,6 +319,10 @@ BEGIN_JUCER_METADATA
   <TEXTBUTTON name="Mute" id="7d69657298f35ed6" memberName="muteButton" virtualName=""
               explicitFocusOrder="0" pos="96 0 32 24" bgColOff="ffffcc64" bgColOn="fffd5f5f"
               buttonText="Mute" connectedEdges="15" needsCallback="1" radioGroupId="0"/>
+  <TEXTEDITOR name="Pad Name" id="2c1f90d9cc479996" memberName="padName" virtualName=""
+              explicitFocusOrder="0" pos="0 24 128 32" bkgcol="ffffff" outlinecol="0"
+              shadowcol="2d2d2d" initialText="" multiline="0" retKeyStartsLine="0"
+              readonly="0" scrollbars="0" caret="1" popupmenu="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

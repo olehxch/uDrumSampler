@@ -89,6 +89,7 @@ private:
     ScopedPointer<TextButton> openFile;
     ScopedPointer<TextButton> soloButton;
     ScopedPointer<TextButton> muteButton;
+    ScopedPointer<TextEditor> padName;
 
 
     //==============================================================================
