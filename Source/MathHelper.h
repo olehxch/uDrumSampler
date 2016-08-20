@@ -15,9 +15,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 class MathHelper {
-	public:
-		static float linearToDb(float logv) { return 20.0 * log(logv); }
-		static float DbToLinear(float linv) { return powf(10.0, (linv / 20.0)); }
+    public:
+        static float linearToDb(float logv) { return 20.0 * log(logv); }
+        static float DbToLinear(float linv) { return powf(10.0, (linv / 20.0)); }
 };
 
 

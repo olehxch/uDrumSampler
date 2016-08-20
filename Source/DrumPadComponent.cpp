@@ -93,18 +93,18 @@ DrumPadComponent::DrumPadComponent (juce::String name, Colour color, juce::Strin
 
 
     //[Constructor] You can add your own custom stuff here..
-	//addMouseListener(this, false);
-	mFormatManager.registerBasicFormats();
+    //addMouseListener(this, false);
+    mFormatManager.registerBasicFormats();
 
-	volumeSlider->setValue(MathHelper::linearToDb(0.8));
-	volumeSlider->setTextValueSuffix(" dB");
+    volumeSlider->setValue(MathHelper::linearToDb(0.8));
+    volumeSlider->setTextValueSuffix(" dB");
 
-	loadSampleFile(path);
-	this->mPadTitle = name;
-	this->mBackgroudColor = color;
+    loadSampleFile(path);
+    this->mPadTitle = name;
+    this->mBackgroudColor = color;
 
-	padName->setFont(Font("Agency FB", 38.00f, Font::plain));
-	padName->setText(name);
+    padName->setFont(Font("Agency FB", 38.00f, Font::plain));
+    padName->setText(name);
     //[/Constructor]
 }
 
@@ -122,7 +122,7 @@ DrumPadComponent::~DrumPadComponent()
 
 
     //[Destructor]. You can add your own custom destruction code here..
-	mTransportSource.releaseResources();
+    mTransportSource.releaseResources();
     //[/Destructor]
 }
 
@@ -135,7 +135,7 @@ void DrumPadComponent::paint (Graphics& g)
     g.fillAll (Colour (0xff939393));
 
     //[UserPaint] Add your own custom painting code here..
-	if(mIsSampleLoaded) g.fillAll(mBackgroudColor);
+    if(mIsSampleLoaded) g.fillAll(mBackgroudColor);
     //[/UserPaint]
 }
 
@@ -162,42 +162,42 @@ void DrumPadComponent::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == imageButton)
     {
         //[UserButtonCode_imageButton] -- add your button handler code here..
-		
-		mTransportSource.stop();
-		mTransportSource.setPosition(0);
-		mTransportSource.start();
+        
+        mTransportSource.stop();
+        mTransportSource.setPosition(0);
+        mTransportSource.start();
 
         //[/UserButtonCode_imageButton]
     }
     else if (buttonThatWasClicked == openFile)
     {
         //[UserButtonCode_openFile] -- add your button handler code here..
-		
-		FileChooser chooser("Select a Wave sample...", File::nonexistent,"*.wav");
-		if (chooser.browseForFileToOpen())
-		{
-			loadSampleFile(chooser.getResult());
-		}
         
-		//[/UserButtonCode_openFile]
+        FileChooser chooser("Select a Wave sample...", File::nonexistent,"*.wav");
+        if (chooser.browseForFileToOpen())
+        {
+            loadSampleFile(chooser.getResult());
+        }
+        
+        //[/UserButtonCode_openFile]
     }
     else if (buttonThatWasClicked == soloButton)
     {
         //[UserButtonCode_soloButton] -- add your button handler code here..
-		
-		mIsMuted = false;
-		mIsSolo = true;
         
-		//[/UserButtonCode_soloButton]
+        mIsMuted = false;
+        mIsSolo = true;
+        
+        //[/UserButtonCode_soloButton]
     }
     else if (buttonThatWasClicked == muteButton)
     {
         //[UserButtonCode_muteButton] -- add your button handler code here..
-		
-		mIsMuted = true;
-		mIsSolo = false;
         
-		//[/UserButtonCode_muteButton]
+        mIsMuted = true;
+        mIsSolo = false;
+        
+        //[/UserButtonCode_muteButton]
     }
 
     //[UserbuttonClicked_Post]
@@ -212,10 +212,10 @@ void DrumPadComponent::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == volumeSlider)
     {
         //[UserSliderCode_volumeSlider] -- add your slider handling code here..
-		
-		mTransportSource.setGain(MathHelper::DbToLinear(volumeSlider->getValue()) );
         
-		//[/UserSliderCode_volumeSlider]
+        mTransportSource.setGain(MathHelper::DbToLinear(volumeSlider->getValue()) );
+        
+        //[/UserSliderCode_volumeSlider]
     }
 
     //[UsersliderValueChanged_Post]
@@ -228,59 +228,59 @@ void DrumPadComponent::sliderValueChanged (Slider* sliderThatWasMoved)
 
 void DrumPadComponent::setColor(Colour c)
 {
-	mBackgroudColor = c;
+    mBackgroudColor = c;
 }
 
 void DrumPadComponent::setPadName(juce::String name)
 {
-	mPadTitle = name;
+    mPadTitle = name;
 }
 
 void DrumPadComponent::loadSampleFile(juce::String path)
 {
-	juce::File file(path);
-	loadSampleFile(file);
+    juce::File file(path);
+    loadSampleFile(file);
 }
 
 void DrumPadComponent::loadSampleFile(File& file)
 {
-	AudioFormatReader* reader = mFormatManager.createReaderFor(file);
+    AudioFormatReader* reader = mFormatManager.createReaderFor(file);
 
-	if (reader != nullptr) {
-		ScopedPointer<AudioFormatReaderSource> newSource = new AudioFormatReaderSource(reader, true);
-		mTransportSource.setSource(newSource, 0, nullptr, reader->sampleRate);
-		mReaderSource = newSource.release();
-		mIsSampleLoaded = true;
-		repaint();
-	} else {
-		mIsSampleLoaded = false;
-	}
+    if (reader != nullptr) {
+        ScopedPointer<AudioFormatReaderSource> newSource = new AudioFormatReaderSource(reader, true);
+        mTransportSource.setSource(newSource, 0, nullptr, reader->sampleRate);
+        mReaderSource = newSource.release();
+        mIsSampleLoaded = true;
+        repaint();
+    } else {
+        mIsSampleLoaded = false;
+    }
 }
 
 void DrumPadComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
 {
-	mTransportSource.getNextAudioBlock(bufferToFill);
+    mTransportSource.getNextAudioBlock(bufferToFill);
 }
 
 void DrumPadComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
-	mTransportSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    mTransportSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
 }
 
 AudioTransportSource& DrumPadComponent::getAudioSource()
 {
-	return mTransportSource;
+    return mTransportSource;
 }
 
 void DrumPadComponent::play()
 {
-	mTransportSource.setPosition(0);
-	mTransportSource.start();
+    mTransportSource.setPosition(0);
+    mTransportSource.start();
 }
 
 void DrumPadComponent::setVolume(float volume)
 {
-	mTransportSource.setGain(volume);
+    mTransportSource.setGain(volume);
 }
 //[/MiscUserCode]
 

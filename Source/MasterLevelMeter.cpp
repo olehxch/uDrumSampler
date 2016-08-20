@@ -60,19 +60,19 @@ MasterLevelMeter::MasterLevelMeter ()
 
 
     //[Constructor] You can add your own custom stuff here..
-	sliderMaster->setValue(MathHelper::linearToDb(0.8));
-	sliderMaster->setTextValueSuffix(" dB");
-	
-	showVolume(MathHelper::linearToDb(0.0));
+    sliderMaster->setValue(MathHelper::linearToDb(0.8));
+    sliderMaster->setTextValueSuffix(" dB");
+    
+    showVolume(MathHelper::linearToDb(0.0));
 
-	// guiUpdateTimer
+    // guiUpdateTimer
 
-	mGuiUpdateTimer.setCallback([this]() {
-		masterMeter->setValue(mShowMasterVolume);
-	});
+    mGuiUpdateTimer.setCallback([this]() {
+        masterMeter->setValue(mShowMasterVolume);
+    });
 
-	// update master meter value every 50ms
-	mGuiUpdateTimer.startTimer(50);
+    // update master meter value every 50ms
+    mGuiUpdateTimer.startTimer(50);
 
     //[/Constructor]
 }
@@ -87,7 +87,7 @@ MasterLevelMeter::~MasterLevelMeter()
 
 
     //[Destructor]. You can add your own custom destruction code here..
-	mGuiUpdateTimer.stopTimer();
+    mGuiUpdateTimer.stopTimer();
     //[/Destructor]
 }
 
@@ -100,8 +100,8 @@ void MasterLevelMeter::paint (Graphics& g)
     g.fillAll (Colour (0xff21212a));
 
     //[UserPaint] Add your own custom painting code here..
-	
-	mShowMasterVolume = mShowMasterVolume - mDecMasterVolume;
+    
+    mShowMasterVolume = mShowMasterVolume - mDecMasterVolume;
     //[/UserPaint]
 }
 
@@ -124,7 +124,7 @@ void MasterLevelMeter::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == sliderMaster)
     {
         //[UserSliderCode_sliderMaster] -- add your slider handling code here..
-		mMasterVolume = MathHelper::DbToLinear(sliderMaster->getValue());
+        mMasterVolume = MathHelper::DbToLinear(sliderMaster->getValue());
         //[/UserSliderCode_sliderMaster]
     }
 
@@ -137,8 +137,8 @@ void MasterLevelMeter::sliderValueChanged (Slider* sliderThatWasMoved)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void MasterLevelMeter::showVolume(float value)
 {
-	mShowMasterVolume = MathHelper::linearToDb(value);
-	//masterMeter->setValue(value);
+    mShowMasterVolume = MathHelper::linearToDb(value);
+    //masterMeter->setValue(value);
 }
 //[/MiscUserCode]
 

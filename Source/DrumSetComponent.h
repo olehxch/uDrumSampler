@@ -45,10 +45,10 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void prepareToPlay(int samplesPerBlockExpected, double sampleRate);
-	void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
+    void prepareToPlay(int samplesPerBlockExpected, double sampleRate);
+    void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
 
-	void play(int padNumber);
+    void play(int padNumber);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -56,8 +56,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	AudioMixer mMixer;
-	juce::Array<DrumPadComponent*> mPads;
+    AudioMixer mMixer;
+    juce::Array<DrumPadComponent*> mPads;
     //[/UserVariables]
 
     //==============================================================================

@@ -22,10 +22,10 @@ public:
     AudioMixer();
     ~AudioMixer();
 
-	void setSolo(int pos, bool value);
-	void setMute(int pos, bool value);
+    void setSolo(int pos, bool value);
+    void setMute(int pos, bool value);
 private:
-	
+    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioMixer)
 };

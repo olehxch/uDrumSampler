@@ -25,9 +25,9 @@
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 struct PadInfo {
-	juce::String name;
-	juce::String path;
-	juce::Colour color;
+    juce::String name;
+    juce::String path;
+    juce::Colour color;
 };
 
 //[/MiscUserDefs]
@@ -36,38 +36,38 @@ struct PadInfo {
 DrumSetComponent::DrumSetComponent ()
 {
     //[Constructor_pre] You can add your own custom stuff here..
-	juce::String absPath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName();
+    juce::String absPath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName();
 
-	// we initialize here because static initializers for colors are initialized before constructor
-	PadInfo padInfo[16] = {
-		{ "Kick", absPath + "\\Audio\\kick.wav", Colour(0xFFFF5947) },
-		{ "Snare", absPath + "\\Audio\\snare.wav", Colour(0xFFFF3621) },
-		{ "Hi Hat Open", absPath + "\\Audio\\hihatopen.wav", Colour(0xFFFF1800) },
-		{ "Hi Hat Closed", absPath + "\\Audio\\hihatclosed.wav", Colour(0xFFE91600) },
+    // we initialize here because static initializers for colors are initialized before constructor
+    PadInfo padInfo[16] = {
+        { "Kick", absPath + "\\Audio\\kick.wav", Colour(0xFFFF5947) },
+        { "Snare", absPath + "\\Audio\\snare.wav", Colour(0xFFFF3621) },
+        { "Hi Hat Open", absPath + "\\Audio\\hihatopen.wav", Colour(0xFFFF1800) },
+        { "Hi Hat Closed", absPath + "\\Audio\\hihatclosed.wav", Colour(0xFFE91600) },
 
-		{ "Crash 1", absPath + "\\Audio\\Crash1.wav", Colour(0xFFDCFB47) },
-		{ "Crash 2", absPath + "\\Audio\\Crash2.wav", Colour(0xFFD4FA1D) },
-		{ "Rim Shot 1", absPath + "\\Audio\\rim1.wav", Colour(0xFFCFF900) },
-		{ "Rim Shot 2", absPath + "\\Audio\\rim2.wav", Colour(0xFFA9CC00) },
+        { "Crash 1", absPath + "\\Audio\\Crash1.wav", Colour(0xFFDCFB47) },
+        { "Crash 2", absPath + "\\Audio\\Crash2.wav", Colour(0xFFD4FA1D) },
+        { "Rim Shot 1", absPath + "\\Audio\\rim1.wav", Colour(0xFFCFF900) },
+        { "Rim Shot 2", absPath + "\\Audio\\rim2.wav", Colour(0xFFA9CC00) },
 
-		{ "Tom 1", absPath + "\\Audio\\tom10.wav", Colour(0xFF7AAEEC) },
-		{ "Tom 2", absPath + "\\Audio\\tom12.wav", Colour(0xFF5494E1) },
-		{ "Tom 3", absPath + "\\Audio\\tom16.wav", Colour(0xFF337CD4) },
-		{ "Tom 4", absPath + "\\Audio\\tom20.wav", Colour(0xFF1061C3) },
+        { "Tom 1", absPath + "\\Audio\\tom10.wav", Colour(0xFF7AAEEC) },
+        { "Tom 2", absPath + "\\Audio\\tom12.wav", Colour(0xFF5494E1) },
+        { "Tom 3", absPath + "\\Audio\\tom16.wav", Colour(0xFF337CD4) },
+        { "Tom 4", absPath + "\\Audio\\tom20.wav", Colour(0xFF1061C3) },
 
-		{ "Sample 13", absPath + "\\Audio\\", Colour(0xFFFFCB79) },
-		{ "Sample 14", absPath + "\\Audio\\", Colour(0xFFFFBB51) },
-		{ "Sample 15", absPath + "\\Audio\\", Colour(0xFFFFAD2C) },
-		{ "Sample 16", absPath + "\\Audio\\", Colour(0xFFFF9C00) },
-	};
+        { "Sample 13", absPath + "\\Audio\\", Colour(0xFFFFCB79) },
+        { "Sample 14", absPath + "\\Audio\\", Colour(0xFFFFBB51) },
+        { "Sample 15", absPath + "\\Audio\\", Colour(0xFFFFAD2C) },
+        { "Sample 16", absPath + "\\Audio\\", Colour(0xFFFF9C00) },
+    };
 
-	mPads.resize(16);
-	for (int i = 0; i < mPads.size(); i++) {
-		auto info = padInfo[i];
+    mPads.resize(16);
+    for (int i = 0; i < mPads.size(); i++) {
+        auto info = padInfo[i];
 
-		mPads.getReference(i) = new DrumPadComponent(info.name, info.color, info.path);
-		addAndMakeVisible(mPads[i]);
-	}
+        mPads.getReference(i) = new DrumPadComponent(info.name, info.color, info.path);
+        addAndMakeVisible(mPads[i]);
+    }
 
     //[/Constructor_pre]
 
@@ -86,14 +86,14 @@ DrumSetComponent::~DrumSetComponent()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
-	
+    
 
-	
+    
     //[Destructor]. You can add your own custom destruction code here..
-	mMixer.releaseResources();
+    mMixer.releaseResources();
 
-	for (auto& pad : mPads) delete pad;
-	mPads.removeRange(0, mPads.size());
+    for (auto& pad : mPads) delete pad;
+    mPads.removeRange(0, mPads.size());
     //[/Destructor]
 }
 
@@ -112,14 +112,14 @@ void DrumSetComponent::paint (Graphics& g)
 void DrumSetComponent::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
-	int size = mPads.getFirst()->getWidth();		// all pads should have equal width and height
-	int col = 0;
-	for (int i = 0; i < mPads.size(); i++) {
-		int row = i % 4;
-		if (i != 0 && i % 4 == 0) { col++; }
+    int size = mPads.getFirst()->getWidth();        // all pads should have equal width and height
+    int col = 0;
+    for (int i = 0; i < mPads.size(); i++) {
+        int row = i % 4;
+        if (i != 0 && i % 4 == 0) { col++; }
 
-		mPads[i]->setBounds(row * size, col * size, size, size);
-	}
+        mPads[i]->setBounds(row * size, col * size, size, size);
+    }
     //[/UserPreResize]
 
     //[UserResized] Add your own custom resize handling here..
@@ -131,22 +131,22 @@ void DrumSetComponent::resized()
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void DrumSetComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
-	mMixer.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    mMixer.prepareToPlay(samplesPerBlockExpected, sampleRate);
 
-	for (auto& pad : mPads) {
-		pad->prepareToPlay(samplesPerBlockExpected, sampleRate);
-		mMixer.addInputSource(&pad->getAudioSource(), false);
-	}
+    for (auto& pad : mPads) {
+        pad->prepareToPlay(samplesPerBlockExpected, sampleRate);
+        mMixer.addInputSource(&pad->getAudioSource(), false);
+    }
 }
 
 void DrumSetComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
 {
-	mMixer.getNextAudioBlock(bufferToFill);
+    mMixer.getNextAudioBlock(bufferToFill);
 }
 
 void DrumSetComponent::play(int padNumber)
 {
-	mPads[padNumber]->play();
+    mPads[padNumber]->play();
 }
 
 //[/MiscUserCode]

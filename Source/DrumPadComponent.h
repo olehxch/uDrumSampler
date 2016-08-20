@@ -46,18 +46,18 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setColor(Colour c);
-	void setPadName(juce::String name);
+    void setColor(Colour c);
+    void setPadName(juce::String name);
 
-	void loadSampleFile(juce::String path);
-	void loadSampleFile(File& file);
+    void loadSampleFile(juce::String path);
+    void loadSampleFile(File& file);
 
-	AudioTransportSource& getAudioSource();
-	void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
-	void prepareToPlay(int samplesPerBlockExpected, double sampleRate);
+    AudioTransportSource& getAudioSource();
+    void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
+    void prepareToPlay(int samplesPerBlockExpected, double sampleRate);
 
-	void play();
-	void setVolume(float volume);
+    void play();
+    void setVolume(float volume);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -69,16 +69,16 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	bool mIsSampleLoaded = false;
-	bool mIsMuted = false;
-	bool mIsSolo = false;
+    bool mIsSampleLoaded = false;
+    bool mIsMuted = false;
+    bool mIsSolo = false;
 
-	juce::String mPadTitle = "";
-	Colour mBackgroudColor = Colours::grey;
+    juce::String mPadTitle = "";
+    Colour mBackgroudColor = Colours::grey;
 
-	AudioFormatManager mFormatManager;
-	ScopedPointer<AudioFormatReaderSource> mReaderSource;
-	AudioTransportSource mTransportSource;
+    AudioFormatManager mFormatManager;
+    ScopedPointer<AudioFormatReaderSource> mReaderSource;
+    AudioTransportSource mTransportSource;
     //[/UserVariables]
 
     //==============================================================================

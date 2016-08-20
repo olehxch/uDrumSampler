@@ -16,21 +16,21 @@
 class EventTimer : public Timer
 {
 public:
-	EventTimer() :mCallback(nullptr) {};
-	~EventTimer() {};
+    EventTimer() :mCallback(nullptr) {};
+    ~EventTimer() {};
 
-	void timerCallback() override
-	{
-		mCallback();
-	};
+    void timerCallback() override
+    {
+        mCallback();
+    };
 
-	void setCallback(std::function<void()> cb)
-	{
-		mCallback = cb;
-	}
+    void setCallback(std::function<void()> cb)
+    {
+        mCallback = cb;
+    }
 
 private:
-	std::function<void()> mCallback;
+    std::function<void()> mCallback;
 };
 
 #endif  // EVENTTIMER_H_INCLUDED

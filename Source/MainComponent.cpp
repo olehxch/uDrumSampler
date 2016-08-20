@@ -22,75 +22,75 @@ class MainContentComponent   : public AudioAppComponent, public KeyListener
 {
 public:
     //==============================================================================
-	MainContentComponent()
+    MainContentComponent()
     {
         setSize (576, 512);
         setAudioChannels (0, 2);
 
-		addKeyListener(this);
+        addKeyListener(this);
 
-		addAndMakeVisible(mDrumSet);
-		addAndMakeVisible(mMasterMeter);
+        addAndMakeVisible(mDrumSet);
+        addAndMakeVisible(mMasterMeter);
     }
 
     ~MainContentComponent()
     {
         shutdownAudio();
     }
-	
+    
     //==============================================================================
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override
     {
-		mDrumSet.prepareToPlay(samplesPerBlockExpected, sampleRate);
+        mDrumSet.prepareToPlay(samplesPerBlockExpected, sampleRate);
     }
 
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override
     {
         bufferToFill.clearActiveBufferRegion();
-		mDrumSet.getNextAudioBlock(bufferToFill);
+        mDrumSet.getNextAudioBlock(bufferToFill);
 
-		bufferToFill.buffer->applyGain(mMasterMeter.getVolume());
+        bufferToFill.buffer->applyGain(mMasterMeter.getVolume());
 
-		mMasterMeter.showVolume(bufferToFill.buffer->getMagnitude(0, bufferToFill.numSamples));
+        mMasterMeter.showVolume(bufferToFill.buffer->getMagnitude(0, bufferToFill.numSamples));
     }
 
     void releaseResources() override {}
 
-	bool keyPressed(const KeyPress & key, Component* originatingComponent)
-	{
-		char pressedKey = key.getTextCharacter();
-		
-		for (int i = 0; i < 16; i++) {
-			if (mMappedKeys[i] == pressedKey) mDrumSet.play(i);
-		}
-		
-		return true;
-	}
+    bool keyPressed(const KeyPress & key, Component* originatingComponent)
+    {
+        char pressedKey = key.getTextCharacter();
+        
+        for (int i = 0; i < 16; i++) {
+            if (mMappedKeys[i] == pressedKey) mDrumSet.play(i);
+        }
+        
+        return true;
+    }
 
     //==============================================================================
     void paint (Graphics& g) override
     {
         g.fillAll (Colour(0xFF21212A));
-		//masterMeter.repaint();
+        //masterMeter.repaint();
     }
 
     void resized() override
     {
-		mMasterMeter.setBounds(getWidth() - mMasterMeter.getWidth(), 0, mMasterMeter.getWidth(), mMasterMeter.getHeight());
-		mDrumSet.setBounds(0, 0, mDrumSet.getWidth(), mDrumSet.getHeight());
+        mMasterMeter.setBounds(getWidth() - mMasterMeter.getWidth(), 0, mMasterMeter.getWidth(), mMasterMeter.getHeight());
+        mDrumSet.setBounds(0, 0, mDrumSet.getWidth(), mDrumSet.getHeight());
     }
 
 
 private:
     //==============================================================================
-	MasterLevelMeter mMasterMeter;
-	DrumSetComponent mDrumSet;
+    MasterLevelMeter mMasterMeter;
+    DrumSetComponent mDrumSet;
 
-	const char mMappedKeys[16] = {	'1', '2', '3', '4',
-									'q', 'w', 'e', 'r',
-									'a', 's', 'd', 'f',
-									'z', 'x', 'c', 'v'
-								 };
+    const char mMappedKeys[16] = {    '1', '2', '3', '4',
+                                    'q', 'w', 'e', 'r',
+                                    'a', 's', 'd', 'f',
+                                    'z', 'x', 'c', 'v'
+                                 };
     // Your private member variables go here...
 
 

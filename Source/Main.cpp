@@ -63,11 +63,11 @@ public:
     public:
         MainWindow (String name)  : DocumentWindow (name,
                                                     //Colours::lightgrey,
-													Colour(0xFF21212A),
+                                                    Colour(0xFF21212A),
                                                     DocumentWindow::allButtons)
         {
             setUsingNativeTitleBar (true);
-			
+            
             setContentOwned (createMainContentComponent(), true);
             setResizable (false, false);
 
