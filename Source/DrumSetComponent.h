@@ -47,8 +47,7 @@ public:
 	void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
 	void DrumSetComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate);
 
-	void play(juce::String name);
-	void setVolume(float volume);
+	void play(int padNumber);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -57,15 +56,7 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	MixerAudioSource mixer;
-
-	DrumPadComponent pad1;
-	DrumPadComponent pad2;
-	DrumPadComponent pad3;
-	DrumPadComponent pad4;
-	DrumPadComponent pad5;
-	DrumPadComponent pad6;
-	DrumPadComponent pad7;
-	DrumPadComponent pad8;
+	juce::Array<DrumPadComponent*> pads;
     //[/UserVariables]
 
     //==============================================================================

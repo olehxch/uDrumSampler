@@ -50,6 +50,8 @@ public:
 		drumSet.getNextAudioBlock(bufferToFill);
 
 		bufferToFill.buffer->applyGain(masterMeter.getVolume());
+
+		//masterMeter.setVolume(bufferToFill.buffer->getMagnitude(0, bufferToFill.numSamples));
     }
 
     void releaseResources() override
@@ -59,26 +61,18 @@ public:
 	bool keyPressed(const KeyPress & key, Component* originatingComponent)
 	{
 		char pressedKey = key.getTextCharacter();
-
-		switch (key.getTextCharacter()) {
-			case 'a': { drumSet.play("pad1"); break; }
-			case 's': { drumSet.play("pad2"); break; }
-			case 'd': { drumSet.play("pad3"); break; }
-			case 'f': { drumSet.play("pad4"); break; }
-
-			case 'z': { drumSet.play("pad5"); break; }
-			case 'x': { drumSet.play("pad6"); break; }
-			case 'c': { drumSet.play("pad7"); break; }
-			case 'v': { drumSet.play("pad8"); break; }
-			default: break;
+		
+		for (int i = 0; i < 16; i++) {
+			if (mappedKeys[i] == pressedKey) drumSet.play(i);
 		}
+		
 		return true;
 	}
 
     //==============================================================================
     void paint (Graphics& g) override
     {
-        g.fillAll (Colours::grey);
+        g.fillAll (Colour(0xFF21212A));
 		//masterMeter.repaint();
     }
 
@@ -94,6 +88,11 @@ private:
 	MasterLevelMeter masterMeter;
 	DrumSetComponent drumSet;
 
+	const char mappedKeys[16] = {	'1', '2', '3', '4',
+									'q', 'w', 'e', 'r',
+									'a', 's', 'd', 'f',
+									'z', 'x', 'c', 'v'
+								};
     // Your private member variables go here...
 
 

@@ -45,8 +45,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setValue(double value);
-
+	void setVolume(float value);
 	float getVolume() { return masterVolume; }
     //[/UserMethods]
 

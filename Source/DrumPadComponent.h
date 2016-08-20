@@ -41,7 +41,7 @@ class DrumPadComponent  : public Component,
 {
 public:
     //==============================================================================
-    DrumPadComponent ();
+    DrumPadComponent (juce::String name, Colour color, juce::String path);
     ~DrumPadComponent();
 
     //==============================================================================
@@ -49,6 +49,8 @@ public:
 	void setColor(Colour c);
 	void setText(juce::String text);
 	void setAudioPath(juce::String path);
+
+	void openSampleFile(juce::String path);
 	void loadSampleFile(File& file);
 
 	AudioTransportSource& getAudioSource();
@@ -68,7 +70,9 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+	bool hasSampleLoaded;
 	Colour m_color;
+
 	juce::String m_text;
 
 	// audio player

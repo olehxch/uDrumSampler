@@ -36,14 +36,20 @@ MasterLevelMeter::MasterLevelMeter ()
     sliderMaster->setRange (-50, 6, 0);
     sliderMaster->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     sliderMaster->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    sliderMaster->setColour (Slider::backgroundColourId, Colour (0x00ffffff));
+    sliderMaster->setColour (Slider::trackColourId, Colour (0xff94ff00));
+    sliderMaster->setColour (Slider::rotarySliderFillColourId, Colour (0xfff92c50));
+    sliderMaster->setColour (Slider::rotarySliderOutlineColourId, Colour (0xff27252b));
+    sliderMaster->setColour (Slider::textBoxBackgroundColourId, Colours::white);
     sliderMaster->addListener (this);
 
     addAndMakeVisible (masterMeter = new Slider ("Master Meter"));
-    masterMeter->setRange (0, 1, 0);
+    masterMeter->setRange (-60, 6, 0);
     masterMeter->setSliderStyle (Slider::LinearBarVertical);
-    masterMeter->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
-    masterMeter->setColour (Slider::backgroundColourId, Colour (0xfff2f2f2));
-    masterMeter->setColour (Slider::thumbColourId, Colours::red);
+    masterMeter->setTextBoxStyle (Slider::NoTextBox, true, 10, 20);
+    masterMeter->setColour (Slider::backgroundColourId, Colour (0x3dffffff));
+    masterMeter->setColour (Slider::thumbColourId, Colour (0xfff92c50));
+    masterMeter->setColour (Slider::trackColourId, Colour (0x7fffffff));
     masterMeter->setColour (Slider::rotarySliderOutlineColourId, Colour (0x99ff0404));
 
 
@@ -56,6 +62,8 @@ MasterLevelMeter::MasterLevelMeter ()
     //[Constructor] You can add your own custom stuff here..
 	sliderMaster->setValue(MathHelper::linearToDb(0.8));
 	sliderMaster->setTextValueSuffix(" dB");
+
+	setVolume(MathHelper::linearToDb(0.0));
     //[/Constructor]
 }
 
@@ -78,7 +86,7 @@ void MasterLevelMeter::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::grey);
+    g.fillAll (Colour (0xff21212a));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -114,10 +122,10 @@ void MasterLevelMeter::sliderValueChanged (Slider* sliderThatWasMoved)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void MasterLevelMeter::setValue(double value)
+void MasterLevelMeter::setVolume(float value)
 {
 	//m_levelMeter = value;
-	//masterMeter->setValue(value);
+	masterMeter->setValue(value);
 }
 //[/MiscUserCode]
 
@@ -135,17 +143,19 @@ BEGIN_JUCER_METADATA
                  parentClasses="public Component" constructorParams="" variableInitialisers=""
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="1" initialWidth="100" initialHeight="400">
-  <BACKGROUND backgroundColour="ff808080"/>
+  <BACKGROUND backgroundColour="ff21212a"/>
   <SLIDER name="slider Master" id="de9d1168bd238e19" memberName="sliderMaster"
-          virtualName="" explicitFocusOrder="0" pos="16 304 70 80" min="-50"
-          max="6" int="0" style="RotaryHorizontalVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"
-          needsCallback="1"/>
+          virtualName="" explicitFocusOrder="0" pos="16 304 70 80" bkgcol="ffffff"
+          trackcol="ff94ff00" rotarysliderfill="fff92c50" rotaryslideroutline="ff27252b"
+          textboxbkgd="ffffffff" min="-50" max="6" int="0" style="RotaryHorizontalVerticalDrag"
+          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1" needsCallback="1"/>
   <SLIDER name="Master Meter" id="8ee0c0f1b0343cbf" memberName="masterMeter"
-          virtualName="" explicitFocusOrder="0" pos="16 16 70 270" bkgcol="fff2f2f2"
-          thumbcol="ffff0000" rotaryslideroutline="99ff0404" min="0" max="1"
-          int="0" style="LinearBarVertical" textBoxPos="NoTextBox" textBoxEditable="0"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1" needsCallback="0"/>
+          virtualName="" explicitFocusOrder="0" pos="16 16 70 270" bkgcol="3dffffff"
+          thumbcol="fff92c50" trackcol="7fffffff" rotaryslideroutline="99ff0404"
+          min="-60" max="6" int="0" style="LinearBarVertical" textBoxPos="NoTextBox"
+          textBoxEditable="0" textBoxWidth="10" textBoxHeight="20" skewFactor="1"
+          needsCallback="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

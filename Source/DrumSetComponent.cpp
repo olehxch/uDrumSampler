@@ -24,65 +24,61 @@
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
+struct PadInfo {
+	juce::String name;
+	juce::String path;
+	juce::Colour color;
+};
+
+
+
 //[/MiscUserDefs]
 
 //==============================================================================
 DrumSetComponent::DrumSetComponent ()
 {
     //[Constructor_pre] You can add your own custom stuff here..
-	addAndMakeVisible(pad1);
-	addAndMakeVisible(pad2);
-	addAndMakeVisible(pad3);
-	addAndMakeVisible(pad4);
-	
-	addAndMakeVisible(pad5);
-	addAndMakeVisible(pad6);
-	addAndMakeVisible(pad7);
-	addAndMakeVisible(pad8);
 
+	// we initialize here because static initializers for colors are initialized here
+	PadInfo padInfo[16] = {
+		{ "Kick", R"(C:\AudioProgramming\uDrumSampler\Audio\kick.wav)", Colour(0xFFFF5947) },
+		{ "Snare", R"(C:\AudioProgramming\uDrumSampler\Audio\snare.wav)", Colour(0xFFFF3621) },
+		{ "Hi Hat Open", R"(C:\AudioProgramming\uDrumSampler\Audio\hihatopen.wav)", Colour(0xFFFF1800) },
+		{ "Hi Hat Closed", R"(C:\AudioProgramming\uDrumSampler\Audio\hihatclosed.wav)", Colour(0xFFE91600) },
+
+		{ "Crash 1", R"(C:\AudioProgramming\uDrumSampler\Audio\Crash1.wav)", Colour(0xFFDCFB47) },
+		{ "Crash 2", R"(C:\AudioProgramming\uDrumSampler\Audio\Crash2.wav)", Colour(0xFFD4FA1D) },
+		{ "Rim Shot 1", R"()", Colour(0xFFCFF900) },
+		{ "Rim Shot 2", R"()", Colour(0xFFA9CC00) },
+
+		{ "Tom 1", R"(C:\AudioProgramming\uDrumSampler\Audio\tom10.wav)", Colour(0xFF7AAEEC) },
+		{ "Tom 2", R"(C:\AudioProgramming\uDrumSampler\Audio\tom12.wav)", Colour(0xFF5494E1) },
+		{ "Tom 3", R"(C:\AudioProgramming\uDrumSampler\Audio\tom16.wav)", Colour(0xFF337CD4) },
+		{ "Tom 4", R"()", Colour(0xFF1061C3) },
+
+		{ "Sample 13", R"()", Colour(0xFFFFCB79) },
+		{ "Sample 14", R"()", Colour(0xFFFFBB51) },
+		{ "Sample 15", R"()", Colour(0xFFFFAD2C) },
+		{ "Sample 16", R"()", Colour(0xFFFF9C00) },
+	};
+
+	pads.resize(16);
+	for (int i = 0; i < pads.size(); i++) {
+		auto info = padInfo[i];
+
+		pads.getReference(i) = new DrumPadComponent(info.name, info.color, info.path);
+		addAndMakeVisible(pads[i]);
+	}
     //[/Constructor_pre]
 
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (800, 400);
+    setSize (400, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
-	// first line
-	pad1.setText("Kick");
-	pad1.setAudioPath(R"(C:\AudioProgramming\uDrumSampler\Audio\kick.wav)");
-	pad1.setColor(Colours::red);
-
-	pad2.setText("Snare");
-	pad2.setAudioPath(R"(C:\AudioProgramming\uDrumSampler\Audio\snare.wav)");
-	pad2.setColor(Colours::green);
-
-	pad3.setText("Hi Hat 1");
-	pad3.setAudioPath(R"(C:\AudioProgramming\uDrumSampler\Audio\hihatopen.wav)");
-	pad3.setColor(Colours::blue);
-
-	pad4.setText("Hi Hat 2");
-	pad4.setAudioPath(R"(C:\AudioProgramming\uDrumSampler\Audio\hihatclosed.wav)");
-	pad4.setColor(Colours::yellow);
-
-	// second line
-	pad5.setText("Crash 1");
-	pad5.setAudioPath(R"(C:\AudioProgramming\uDrumSampler\Audio\Crash1.wav)");
-	pad5.setColor(Colours::cyan);
-
-	pad6.setText("Crash 2");
-	pad6.setAudioPath(R"(C:\AudioProgramming\uDrumSampler\Audio\Crash2.wav)");
-	pad6.setColor(Colours::darkcyan);
-
-	pad7.setText("Tom 1");
-	pad7.setAudioPath(R"(C:\AudioProgramming\uDrumSampler\Audio\tom10.wav)");
-	pad7.setColor(Colours::gold);
-
-	pad8.setText("Tom 2");
-	pad8.setAudioPath(R"(C:\AudioProgramming\uDrumSampler\Audio\tom12.wav)");
-	pad8.setColor(Colours::goldenrod);
     //[/Constructor]
 }
 
@@ -95,6 +91,9 @@ DrumSetComponent::~DrumSetComponent()
 	
     //[Destructor]. You can add your own custom destruction code here..
 	mixer.releaseResources();
+
+	for (auto& pad : pads) delete pad;
+	pads.removeRange(0, pads.size());
     //[/Destructor]
 }
 
@@ -104,7 +103,7 @@ void DrumSetComponent::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::grey);
+    g.fillAll (Colour(0xFF21212A));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -112,18 +111,20 @@ void DrumSetComponent::paint (Graphics& g)
 
 void DrumSetComponent::resized()
 {
-	int stride = pad1.getWidth();
-
     //[UserPreResize] Add your own custom resize code here..
-	pad1.setBounds(0, 0, pad1.getWidth(), pad1.getHeight());
-	pad2.setBounds(stride, 0, pad2.getWidth(), pad2.getHeight());
-	pad3.setBounds(stride * 2, 0, pad3.getWidth(), pad3.getHeight());
-	pad4.setBounds(stride * 3, 0, pad4.getWidth(), pad4.getHeight());
-	
-	pad5.setBounds(0, stride, pad5.getWidth(), pad5.getHeight());
-	pad6.setBounds(stride, stride, pad6.getWidth(), pad6.getHeight());
-	pad7.setBounds(stride * 2, stride, pad7.getWidth(), pad7.getHeight());
-	pad8.setBounds(stride * 3, stride, pad8.getWidth(), pad8.getHeight());
+	int size = 100;		// all pads should have equal width and height
+	int stride = 100;
+	int freeSpace = 0;	// 10px between pads
+
+	int col = 0;
+	for (int i = 0; i < pads.size(); i++) {
+		int row = i % 4;
+		if (i != 0 && i % 4 == 0) {
+			col++;
+		}
+		pads[i]->setBounds(row * size + freeSpace, col * size + freeSpace, size, size);
+
+	}
     //[/UserPreResize]
 
     //[UserResized] Add your own custom resize handling here..
@@ -142,40 +143,15 @@ void DrumSetComponent::prepareToPlay(int samplesPerBlockExpected, double sampleR
 {
 	mixer.prepareToPlay(samplesPerBlockExpected, sampleRate);
 
-	pad1.prepareToPlay(samplesPerBlockExpected, sampleRate);
-	pad2.prepareToPlay(samplesPerBlockExpected, sampleRate);
-	pad3.prepareToPlay(samplesPerBlockExpected, sampleRate);
-	pad4.prepareToPlay(samplesPerBlockExpected, sampleRate);
-
-	pad5.prepareToPlay(samplesPerBlockExpected, sampleRate);
-	pad6.prepareToPlay(samplesPerBlockExpected, sampleRate);
-	pad7.prepareToPlay(samplesPerBlockExpected, sampleRate);
-	pad8.prepareToPlay(samplesPerBlockExpected, sampleRate);
-
-	// add to mixer
-	mixer.addInputSource(&pad1.getAudioSource(), false);
-	mixer.addInputSource(&pad2.getAudioSource(), false);
-	mixer.addInputSource(&pad3.getAudioSource(), false);
-	mixer.addInputSource(&pad4.getAudioSource(), false);
-
-	mixer.addInputSource(&pad5.getAudioSource(), false);
-	mixer.addInputSource(&pad6.getAudioSource(), false);
-	mixer.addInputSource(&pad7.getAudioSource(), false);
-	mixer.addInputSource(&pad8.getAudioSource(), false);
+	for (auto& pad : pads) {
+		pad->prepareToPlay(samplesPerBlockExpected, sampleRate);
+		mixer.addInputSource(&pad->getAudioSource(), false);
+	}
 }
 
-void DrumSetComponent::play(juce::String kitname)
+void DrumSetComponent::play(int padNumber)
 {
-	if (kitname == "pad1") pad1.play();
-	if (kitname == "pad2") pad2.play();
-	if (kitname == "pad3") pad3.play();
-	if (kitname == "pad4") pad4.play();
-
-	if (kitname == "pad5") pad5.play();
-	if (kitname == "pad6") pad6.play();
-	if (kitname == "pad7") pad7.play();
-	if (kitname == "pad8") pad8.play();
-
+	pads[padNumber]->play();
 }
 
 //[/MiscUserCode]

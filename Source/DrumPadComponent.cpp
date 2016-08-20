@@ -27,7 +27,7 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-DrumPadComponent::DrumPadComponent ()
+DrumPadComponent::DrumPadComponent (juce::String name, Colour color, juce::String path)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -42,20 +42,24 @@ DrumPadComponent::DrumPadComponent ()
                             Image(), 1.000f, Colour (0x00000000));
     addAndMakeVisible (volumeSlider = new Slider ("Volume Slider"));
     volumeSlider->setRange (-60, 6, 0);
-    volumeSlider->setSliderStyle (Slider::Rotary);
+    volumeSlider->setSliderStyle (Slider::RotaryHorizontalVerticalDrag);
     volumeSlider->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
+    volumeSlider->setColour (Slider::backgroundColourId, Colour (0x00ffffff));
     volumeSlider->setColour (Slider::thumbColourId, Colour (0xffb90deb));
     volumeSlider->setColour (Slider::trackColourId, Colour (0x7fffffff));
-    volumeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0x7f000000));
-    volumeSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x66000000));
+    volumeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0xfff92c50));
+    volumeSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0xd027252b));
     volumeSlider->setColour (Slider::textBoxTextColourId, Colours::black);
-    volumeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xfff7f7f7));
+    volumeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0x9cf7f7f7));
+    volumeSlider->setColour (Slider::textBoxOutlineColourId, Colour (0x63808080));
     volumeSlider->addListener (this);
 
     addAndMakeVisible (openFile = new TextButton ("new button"));
     openFile->setButtonText (TRANS("Open"));
     openFile->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight | Button::ConnectedOnTop | Button::ConnectedOnBottom);
     openFile->addListener (this);
+    openFile->setColour (TextButton::buttonColourId, Colour (0xffffc064));
+    openFile->setColour (TextButton::buttonOnColourId, Colour (0xfffd5f5f));
 
 
     //[UserPreSize]
@@ -70,6 +74,10 @@ DrumPadComponent::DrumPadComponent ()
 
 	volumeSlider->setValue(MathHelper::linearToDb(0.8));
 	volumeSlider->setTextValueSuffix(" dB");
+
+	setAudioPath(path);
+	this->m_text = name;
+	this->m_color = color;
     //[/Constructor]
 }
 
@@ -94,16 +102,15 @@ void DrumPadComponent::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xfff0e23c));
+    g.fillAll (Colour (0xff939393));
 
     //[UserPaint] Add your own custom painting code here..
-	g.fillAll(m_color);
+	if(hasSampleLoaded) g.fillAll(m_color);
 
 	g.setColour(Colours::black);
 	g.setFont(Font("Agency FB", 38.00f, Font::plain));
-	g.drawText(m_text,
-		0, 0, 100, 100,
-		Justification::centred, true);
+	g.drawText(m_text, 0, 0, 100, 100, Justification::centred, true);
+
     //[/UserPaint]
 }
 
@@ -113,7 +120,7 @@ void DrumPadComponent::resized()
     //[/UserPreResize]
 
     imageButton->setBounds (0, 0, 100, 100);
-    volumeSlider->setBounds (8, 64, 88, 33);
+    volumeSlider->setBounds (8, 64, 88, 40);
     openFile->setBounds (0, 0, 100, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -140,6 +147,8 @@ void DrumPadComponent::buttonClicked (Button* buttonThatWasClicked)
 		if (chooser.browseForFileToOpen())
 		{
 			loadSampleFile(chooser.getResult());
+		} else {
+			hasSampleLoaded = false;
 		}
         //[/UserButtonCode_openFile]
     }
@@ -157,6 +166,8 @@ void DrumPadComponent::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_volumeSlider] -- add your slider handling code here..
 		transportSource.setGain(MathHelper::DbToLinear(volumeSlider->getValue()) );
+
+
         //[/UserSliderCode_volumeSlider]
     }
 
@@ -178,6 +189,11 @@ void DrumPadComponent::setText(juce::String text)
 	m_text = text;
 }
 
+void DrumPadComponent::openSampleFile(juce::String path)
+{
+
+}
+
 void DrumPadComponent::loadSampleFile(File& file)
 {
 	AudioFormatReader* reader = formatManager.createReaderFor(file);
@@ -186,6 +202,10 @@ void DrumPadComponent::loadSampleFile(File& file)
 		ScopedPointer<AudioFormatReaderSource> newSource = new AudioFormatReaderSource(reader, true);
 		transportSource.setSource(newSource, 0, nullptr, reader->sampleRate);
 		readerSource = newSource.release();
+		hasSampleLoaded = true;
+		repaint();
+	} else {
+		hasSampleLoaded = false;
 	}
 }
 
@@ -233,10 +253,10 @@ void DrumPadComponent::setVolume(float volume)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="DrumPadComponent" componentName=""
-                 parentClasses="public Component" constructorParams="" variableInitialisers=""
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="100" initialHeight="100">
-  <BACKGROUND backgroundColour="fff0e23c"/>
+                 parentClasses="public Component" constructorParams="juce::String name, Colour color, juce::String path"
+                 variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
+                 overlayOpacity="0.330" fixedSize="1" initialWidth="100" initialHeight="100">
+  <BACKGROUND backgroundColour="ff939393"/>
   <IMAGEBUTTON name="Pad Button" id="196a771a06c79cc8" memberName="imageButton"
                virtualName="" explicitFocusOrder="0" pos="0 0 100 100" buttonText="KICK"
                connectedEdges="0" needsCallback="1" radioGroupId="0" keepProportions="1"
@@ -244,14 +264,16 @@ BEGIN_JUCER_METADATA
                opacityOver="1" colourOver="69b8eb" resourceDown="" opacityDown="1"
                colourDown="0"/>
   <SLIDER name="Volume Slider" id="5ce05c4509ea200" memberName="volumeSlider"
-          virtualName="" explicitFocusOrder="0" pos="8 64 88 33" thumbcol="ffb90deb"
-          trackcol="7fffffff" rotarysliderfill="7f000000" rotaryslideroutline="66000000"
-          textboxtext="ff000000" textboxbkgd="fff7f7f7" min="-60" max="6"
-          int="0" style="Rotary" textBoxPos="TextBoxLeft" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1" needsCallback="1"/>
+          virtualName="" explicitFocusOrder="0" pos="8 64 88 40" bkgcol="ffffff"
+          thumbcol="ffb90deb" trackcol="7fffffff" rotarysliderfill="fff92c50"
+          rotaryslideroutline="d027252b" textboxtext="ff000000" textboxbkgd="9cf7f7f7"
+          textboxoutline="63808080" min="-60" max="6" int="0" style="RotaryHorizontalVerticalDrag"
+          textBoxPos="TextBoxLeft" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1" needsCallback="1"/>
   <TEXTBUTTON name="new button" id="6dc717a7a33a14fb" memberName="openFile"
-              virtualName="" explicitFocusOrder="0" pos="0 0 100 24" buttonText="Open"
-              connectedEdges="15" needsCallback="1" radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="0 0 100 24" bgColOff="ffffc064"
+              bgColOn="fffd5f5f" buttonText="Open" connectedEdges="15" needsCallback="1"
+              radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
