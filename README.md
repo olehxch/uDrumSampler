@@ -1,5 +1,5 @@
 # uDrumSampler
-Very simple and minimal drum sampler
+Very simple and minimal drum sampler as a desktop application
 
 ### Latest binaries (Windows x32)
 
@@ -25,3 +25,6 @@ z, x, c, v
 ### Screenshots
 
 ![s](https://cloud.githubusercontent.com/assets/2100323/17832909/f3bba1f2-6717-11e6-91a1-06d2888bdf76.PNG)
+
+### Issues
+* Sometimes keyboard won't work until you click inside the application window to catch focus
