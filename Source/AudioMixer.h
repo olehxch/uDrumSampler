@@ -21,7 +21,7 @@ class AudioMixer : public MixerAudioSource
 public:
     AudioMixer();
     ~AudioMixer();
-
+    
     void setSolo(int pos, bool value);
     void setMute(int pos, bool value);
 private:

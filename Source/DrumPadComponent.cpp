@@ -64,13 +64,13 @@ DrumPadComponent::DrumPadComponent (juce::String name, Colour color, juce::Strin
     addAndMakeVisible (soloButton = new TextButton ("Solo"));
     soloButton->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight | Button::ConnectedOnTop | Button::ConnectedOnBottom);
     soloButton->addListener (this);
-    soloButton->setColour (TextButton::buttonColourId, Colour (0xff81ff64));
+    soloButton->setColour (TextButton::buttonColourId, Colour (0xff939393));
     soloButton->setColour (TextButton::buttonOnColourId, Colour (0xfffd5f5f));
 
     addAndMakeVisible (muteButton = new TextButton ("Mute"));
     muteButton->setConnectedEdges (Button::ConnectedOnLeft | Button::ConnectedOnRight | Button::ConnectedOnTop | Button::ConnectedOnBottom);
     muteButton->addListener (this);
-    muteButton->setColour (TextButton::buttonColourId, Colour (0xffffcc64));
+    muteButton->setColour (TextButton::buttonColourId, Colour (0xff939393));
     muteButton->setColour (TextButton::buttonOnColourId, Colour (0xfffd5f5f));
 
     addAndMakeVisible (padName = new TextEditor ("Pad Name"));
@@ -162,7 +162,7 @@ void DrumPadComponent::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == imageButton)
     {
         //[UserButtonCode_imageButton] -- add your button handler code here..
-        
+
         mTransportSource.stop();
         mTransportSource.setPosition(0);
         mTransportSource.start();
@@ -172,31 +172,62 @@ void DrumPadComponent::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == openFile)
     {
         //[UserButtonCode_openFile] -- add your button handler code here..
-        
+
         FileChooser chooser("Select a Wave sample...", File::nonexistent,"*.wav");
         if (chooser.browseForFileToOpen())
         {
             loadSampleFile(chooser.getResult());
         }
-        
+
         //[/UserButtonCode_openFile]
     }
     else if (buttonThatWasClicked == soloButton)
     {
         //[UserButtonCode_soloButton] -- add your button handler code here..
-        
-        mIsMuted = false;
-        mIsSolo = true;
-        
+
+        if (mIsSolo) {
+            // disable solo and mute
+            mIsMuted = false;
+            mIsSolo = false;
+
+            muteButton->setColour(TextButton::ColourIds::buttonColourId, Colours::grey);
+            soloButton->setColour(TextButton::ColourIds::buttonColourId, Colours::grey);
+        } else {
+            // enable solo
+            mIsMuted = false;
+            mIsSolo = true;
+
+            muteButton->setColour(TextButton::ColourIds::buttonColourId, Colours::grey);
+            soloButton->setColour(TextButton::ColourIds::buttonColourId, mSoloActiveColor);
+        }
+
+        muteOff();
         //[/UserButtonCode_soloButton]
     }
     else if (buttonThatWasClicked == muteButton)
     {
         //[UserButtonCode_muteButton] -- add your button handler code here..
-        
-        mIsMuted = true;
-        mIsSolo = false;
-        
+
+        if (mIsMuted) {
+            // disable solo and mute
+            mIsMuted = false;
+            mIsSolo = false;
+
+            muteButton->setColour(TextButton::ColourIds::buttonColourId, Colours::grey);
+            soloButton->setColour(TextButton::ColourIds::buttonColourId, Colours::grey);
+
+            muteOff();
+        } else {
+            // enable mute
+            mIsMuted = true;
+            mIsSolo = false;
+
+            muteButton->setColour(TextButton::ColourIds::buttonColourId, mMuteActiveColor);
+            soloButton->setColour(TextButton::ColourIds::buttonColourId, Colours::grey);
+
+            muteOn();
+        }
+
         //[/UserButtonCode_muteButton]
     }
 
@@ -212,9 +243,9 @@ void DrumPadComponent::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == volumeSlider)
     {
         //[UserSliderCode_volumeSlider] -- add your slider handling code here..
-        
+
         mTransportSource.setGain(MathHelper::DbToLinear(volumeSlider->getValue()) );
-        
+
         //[/UserSliderCode_volumeSlider]
     }
 
@@ -257,10 +288,11 @@ void DrumPadComponent::loadSampleFile(File& file)
     }
 }
 
-void DrumPadComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
+/*void DrumPadComponent::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
 {
+    if (mIsMuted) return bufferToFill.clearActiveBufferRegion();
     mTransportSource.getNextAudioBlock(bufferToFill);
-}
+}*/
 
 void DrumPadComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
 {
@@ -280,7 +312,17 @@ void DrumPadComponent::play()
 
 void DrumPadComponent::setVolume(float volume)
 {
-    mTransportSource.setGain(volume);
+    mTransportSource.setGain(volume); 
+}
+
+void DrumPadComponent::muteOn()
+{
+    mTransportSource.setGain(0.0);
+}
+
+void DrumPadComponent::muteOff()
+{
+    mTransportSource.setGain(MathHelper::DbToLinear(volumeSlider->getValue()));
 }
 //[/MiscUserCode]
 
@@ -317,10 +359,10 @@ BEGIN_JUCER_METADATA
               bgColOn="fffd5f5f" buttonText="Open" connectedEdges="15" needsCallback="1"
               radioGroupId="0"/>
   <TEXTBUTTON name="Solo" id="90b021306a90ff3d" memberName="soloButton" virtualName=""
-              explicitFocusOrder="0" pos="64 0 32 24" bgColOff="ff81ff64" bgColOn="fffd5f5f"
+              explicitFocusOrder="0" pos="64 0 32 24" bgColOff="ff939393" bgColOn="fffd5f5f"
               buttonText="Solo" connectedEdges="15" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="Mute" id="7d69657298f35ed6" memberName="muteButton" virtualName=""
-              explicitFocusOrder="0" pos="96 0 32 24" bgColOff="ffffcc64" bgColOn="fffd5f5f"
+              explicitFocusOrder="0" pos="96 0 32 24" bgColOff="ff939393" bgColOn="fffd5f5f"
               buttonText="Mute" connectedEdges="15" needsCallback="1" radioGroupId="0"/>
   <TEXTEDITOR name="Pad Name" id="2c1f90d9cc479996" memberName="padName" virtualName=""
               explicitFocusOrder="0" pos="0 24 128 32" bkgcol="ffffff" outlinecol="0"

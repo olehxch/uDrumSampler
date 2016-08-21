@@ -53,11 +53,14 @@ public:
     void loadSampleFile(File& file);
 
     AudioTransportSource& getAudioSource();
-    void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
+    //void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill);
     void prepareToPlay(int samplesPerBlockExpected, double sampleRate);
 
     void play();
     void setVolume(float volume);
+
+    void muteOn();
+    void muteOff();
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -75,6 +78,8 @@ private:
 
     juce::String mPadTitle = "";
     Colour mBackgroudColor = Colours::grey;
+    Colour mSoloActiveColor = Colour(0xFF81FF64);
+    Colour mMuteActiveColor = Colour(0xFFFFCC64);
 
     AudioFormatManager mFormatManager;
     ScopedPointer<AudioFormatReaderSource> mReaderSource;
